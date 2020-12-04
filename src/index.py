@@ -1,8 +1,3 @@
-# 4) consulta
-#   4a) cargar índice
-#   4b) hacer consulta
-#   4c) mostrar resultados
-
 import nltk
 from operator import itemgetter
 from nltk.stem import SnowballStemmer
