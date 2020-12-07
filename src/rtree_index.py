@@ -91,12 +91,6 @@ def KNN_FaceRecognition(Q, k, path,frontEnd=True):
 
 #######################################
 
-def is_inside_range(neighbor_feature_vector, range_vector):
-    for i in range(len(neighbor_feature_vector) // 2):
-        if not range_vector[i] <= neighbor_feature_vector[i] <= range_vector[i + len(neighbor_feature_vector) // 2]:
-            return False
-    return True
-
 def generate_range_vector(feature_vector, r):
     range_vector = [0] * len(feature_vector)
     for i in range(len(feature_vector) // 2):
@@ -106,14 +100,12 @@ def generate_range_vector(feature_vector, r):
 
 def range_search_rtree(Q, r, path,frontEnd):
     idx, feature_vector, names_dict = init_search(Q, path,frontEnd)
-    temp_vecinos = list(idx.nearest(coordinates=feature_vector, num_results=int(path), objects=True))
     result = []
     range_vector = generate_range_vector(feature_vector, r)
+    temp_vecinos = idx.intersection(range_vector, objects=True)
+    cont = 0
     for vecino in temp_vecinos:
-        if is_inside_range(vecino.bbox, range_vector):
-            result.append(names_dict[str(vecino.id)])
-        else:
-            break
+        result.append(names_dict[str(vecino.id)])
     return result
 
 #######################################
@@ -129,9 +121,7 @@ def range_search_rtree(Q, r, path,frontEnd):
 
 ### Experimientos 
 
-
-#knn = KNN_FaceRecognition("auron1.jpg", 8, "12800",False)
-# start = time.time()
-# print("Los vecinos mas cercano de auron1.jpg: ", range_search_rtree("auron1.jpg", 0.15, "800"))
-# print(time.time() - start)
+start = time.time()
+print("\nRange search - Vecinos de auron: ", range_search_rtree("auron1.jpg", 0.15, "12800", False))
+print(time.time() - start)
 #print(knn)

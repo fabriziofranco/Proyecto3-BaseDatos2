@@ -54,8 +54,9 @@ Las consultas se ejecutaron 5 veces y se promedio el tiempo de respuesta para da
 
 Pasos:
 
-1) Usamos la función `nearest` de la librería, y esta nos retorna directamente los K vecinos más cercanos. Dicha función trabaja de la siguiente manera:  
-    a) Cargar Bloque=p
+Usamos la función `nearest` de la librería, y esta nos retorna directamente los K vecinos más cercanos.
+
+Dicha función es recursiva. El caso base se da cuando se llega a un nodo hoja. Se itera a través de los nodos hijo del nodo hoja, y se van agregando a un max heap, de modo que si el heap se llena, simplemente se aplica un pop para eliminar el vecino más alejado. Cuando no se da el caso base, se itera a través de los hijos del nodo y se aplica MINDIST, para filtrar y evaluar si vale la pena seguir con la recursión por aquel nodo. En caso el nodo pase el filtro, se llama el mismo procedimiento recursivo sobre este.
 
 #### Secuencial
     
@@ -73,25 +74,22 @@ Pasos:
 
 | Tamaño (N)  | Range Search R-Tree | Range Search Sequential      |
 | --- | ----------- |   ---    |
-| 100 |  0.892 s| 0.81 s |
-| 200      | 0.849 s|  0.865 s     |
-| 400   |0.964 s |   0.849 s    |
-| 800   | 1.062 s | 0.964 s      |
-| 1600   |1.154 s |  1.039 s    |
-| 3200   |1.360 s |  2.015 s    |
-| 6400   | 1.444 s|  2.032 s     |
-| 12800   |1.945 s|  2.735 s     |
+| 100 |  0.82 s| 0.81 s |
+| 200      | 0.766 s|  0.865 s     |
+| 400   |0.801 s |   0.849 s    |
+| 800   | 0.794 s | 0.964 s      |
+| 1600   |0.806 s |  1.039 s    |
+| 3200   |2.23 s |  2.015 s    |
+| 6400   | 2.313 s|  2.032 s     |
+| 12800   |2.339 s|  2.735 s     |
 
 #### R-tree
 
 Pasos:
 
 1) Utilizar la función `generate_range_vector` para generar el vector que va a contener los rangos en los que se puede encontrar un vecino.
-2) Utilizar la función `nearest` de la librería, para obtener los vecinos más cercanos en orden.
-3) Ir cargando vecino a vecino (bloque a bloque). (MIN-DIST)
-4) Verificar si el vecino se encuentra dentro del vector de rangos usando la función `is_inside_range`.
-    1) Si se encuentra dentro, se añade a los resultados.
-    2) En caso contrario, dejamos de iterar los vecinos, dado que como han sido retornados en orden, si este vecino no se encuentra dentro de rango, quiere decir que los vecinos restantes tampoco lo están.
+2) Usar la función `intersect` con el range vector generado, para que retorne las imágenes dentro de ese rango.
+3) Ir cargando vecino a vecino (bloque a bloque), e ir agregándolo al resultado.
 5) Retornar los resultados.
 
 #### Secuencial
