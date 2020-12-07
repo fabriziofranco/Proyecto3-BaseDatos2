@@ -86,8 +86,8 @@ def KNN_FaceRecognition(Q, k, path):
 
 ##rtree_index = Rtree_index("100")
 
-rtree_index = Rtree_index("12800")
+#rtree_index = Rtree_index("12800")
 
-#knn = KNN_FaceRecognition("auron1.jpg", 4, "100")
-#print("Los dos vecinos mas cercano de auron1.jpg: ", knn)
+knn = KNN_FaceRecognition("lagertha1.jpg", 5, "12800")
+print("Los dos vecinos mas cercano de auron1.jpg: ", knn)
 
