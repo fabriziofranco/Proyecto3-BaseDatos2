@@ -131,7 +131,7 @@ def range_search_rtree(Q, r, path):
 
 
 #knn = KNN_FaceRecognition("auron1.jpg", 8, "12800",False)
-start = time.time()
-print("Los vecinos mas cercano de auron1.jpg: ", range_search_rtree("auron1.jpg", 0.15, "800"))
-print(time.time() - start)
+#start = time.time()
+#print("Los vecinos mas cercano de auron1.jpg: ", range_search_rtree("auron1.jpg", 0.15, "800"))
+#print(time.time() - start)
 #print(knn)

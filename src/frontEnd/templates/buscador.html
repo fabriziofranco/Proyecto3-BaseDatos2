@@ -30,18 +30,12 @@
         </form>
     </div>
     {% if images_output %}
-    <div class="container">
-        <div class="row"> 
-            <div class="column">
-            {% for image in images_output %}
-                <img src="{{image}}" style="width:100%">
-                {% if loop.index  % ((loop.length)//4) == 0 %}
-                    </div>
-                    <div class="column">
-                {% endif %}
-            {% endfor %}
-            </div>
-        </div>
+    <div class="container mt-4">
+        <section id="pics">
+        {% for image in images_output %}
+            <div><img src="{{image}}" width="240"></div>
+        {% endfor %}
+        </section>
     </div>    
     {% endif %}
 
