@@ -81,7 +81,6 @@ def KNN_FaceRecognition(Q, k, path):
     return vecinos
 
 
-    
 
 
 # rtree_index  = Rtree_index("100")

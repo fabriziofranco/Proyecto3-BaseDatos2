@@ -1,3 +1,24 @@
+import heapq
+import math
+import json
+import face_recognition
+from rtree import index
+
+def generate_point(list):
+    doble = []
+    for i in list:
+        doble.append(i)
+    for i in list:
+        doble.append(i)
+    return tuple(i and i for i in doble)
+
+def euclidean_distance(p1, p2):
+    squared_dist = 0
+    for i in range(len(p1)):
+        squared_dist += math.pow(p1[i] - p2[i], 2)
+    return math.sqrt(squared_dist)
+
+
 def KNN_sequential(Q, k, path):
     total_path = 'data/' + path + '/'
     total_files = int(path)
@@ -20,11 +41,12 @@ def KNN_sequential(Q, k, path):
         images = idx.intersection(idx.bounds, objects=True)
         neighbors = []
         for image in images:
-            d = euclidean_distance(Q, image.bbox)
+            d = euclidean_distance(values, image.bbox)
             heapq.heappush(neighbors, (-d, image.id))
             if len(neighbors) > k:
                 heapq.heappop(neighbors)
         neighbors = [(i, d * -1) for d, i in neighbors]
         neighbors.sort(key=lambda tup: tup[1])
-        return [dict[str(i)] for
-        
+        return [dict[str(i)] for i, d in neighbors]
+
+print("Los dos vecinos mas cercano de auron1.jpg: ", KNN_sequential("auron1.jpg", 4, "100"))
