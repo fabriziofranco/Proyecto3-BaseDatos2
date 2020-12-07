@@ -8,6 +8,12 @@ To do
 - busqueda knn con cola de prioridad secuencial
 - busqueda en rango secuencial
 
+
+## Experimentación
+
+
+### KNN SEARCH
+
 | Tamaño (N)  | KNN R-Tree | KNN Sequential      |
 | --- | ----------- |   ---    |
 | 100 | 0.955 s |       |
