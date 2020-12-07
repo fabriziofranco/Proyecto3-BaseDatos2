@@ -9,6 +9,7 @@ To do
 - busqueda en rango secuencial
 
 | Tamaño (N)  | KNN R-Tree | KNN Sequential      |
+| --- | ----------- |   ---    |
 | 100 | ----------- |       |
 | 200      | Title       |       |
 | 400   | Text        |       |
