@@ -18,7 +18,11 @@ Face recognition Web Platfrom
 | 6400   | 0.977 s        |  2.114 s     |
 | 12800   | 1.068 s        |  3.569 s     |
 
+<<<<<<< HEAD
 Las consultas se ejecutaron 5 veces y se promedio el tiempo de respuesta para dar resultados más reales con un K=8. El capacity de los nodos se calcula de forma dinámica por la fórmula ```round(log(total_files, 10) ** 2) + 3 ``` , lo cual permite que el índice siga siendo rápido, independientemente de la cantidad de elementos que se estima alojará, esto se evidencia en buenos tiempos de respuesta para todos y cada uno de los índices construidos.
+=======
+Las consultas se ejecutaron 5 veces y se promedio el tiempo de respuesta para dar resultados más reales con un K=8. El capacity de los nodos se calcula de forma dinámica por la fórmula ```round(log(total_files, 10) ** 2) + 3 ``` , lo cual permite que el índice siga siendo rápido, independientemente de la cantidad de elementos que se estima alojará, esto se evhaceidencia en buenos tiempos de respuesta para todos y cada uno de los índices construidos.
+>>>>>>> 3d7a0b8a5387078f6a63aec073c77919f395f008
 
 
 ### RANGE SEARCH
