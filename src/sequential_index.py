@@ -3,6 +3,7 @@ import math
 import json
 import face_recognition
 from rtree import index
+import time
 
 def generate_point(list):
     doble = []
@@ -49,4 +50,4 @@ def KNN_sequential(Q, k, path):
         neighbors.sort(key=lambda tup: tup[1])
         return [dict[str(i)] for i, d in neighbors]
 
-print("Los dos vecinos mas cercano de auron1.jpg: ", KNN_sequential("auron1.jpg", 4, "100"))
+print("Los dos vecinos mas cercano de auron1.jpg: ", KNN_sequential("auron1.jpg", 4, "400"))
