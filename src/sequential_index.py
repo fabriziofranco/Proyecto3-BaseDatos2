@@ -19,8 +19,7 @@ def euclidean_distance(p1, p2):
         squared_dist += math.pow(p1[i] - p2[i], 2)
     return math.sqrt(squared_dist)
 
-
-def KNN_sequential(Q, k, path):
+def init_search(Q, path):
     total_path = 'data/' + path + '/'
     total_files = int(path)
 
@@ -39,15 +38,49 @@ def KNN_sequential(Q, k, path):
         p.idx_extension = 'index'
         p.overwrite = False
         idx = index.Index('face_recognition_index_' + path, properties=p)
-        images = idx.intersection(idx.bounds, objects=True)
-        neighbors = []
-        for image in images:
-            d = euclidean_distance(values, image.bbox)
-            heapq.heappush(neighbors, (-d, image.id))
-            if len(neighbors) > k:
-                heapq.heappop(neighbors)
-        neighbors = [(i, d * -1) for d, i in neighbors]
-        neighbors.sort(key=lambda tup: tup[1])
-        return [dict[str(i)] for i, d in neighbors]
+        return idx, values, dict
+    else:
+        return None
 
-print("Los dos vecinos mas cercano de auron1.jpg: ", KNN_sequential("auron1.jpg", 4, "400"))
+def is_inside_range(neighbor_feature_vector, range_vector):
+    for i in range(len(neighbor_feature_vector) // 2):
+        if not range_vector[i] <= neighbor_feature_vector[i] <= range_vector[i + len(neighbor_feature_vector) // 2]:
+            return False
+    return True
+
+def generate_range_vector(feature_vector, r):
+    range_vector = [0] * len(feature_vector)
+    for i in range(len(feature_vector) // 2):
+        range_vector[i] = feature_vector[i] - r
+        range_vector[i + len(feature_vector) // 2] = feature_vector[i] + r
+    return range_vector
+
+def KNN_sequential(Q, k, path):
+    idx, feature_vector, names_dict = init_search(Q, path)
+    if idx == None:
+        return []
+    images = idx.intersection(idx.bounds, objects=True) # puntero al indice
+    neighbors = []
+    for image in images: # recorrer bloque a bloque
+        d = euclidean_distance(feature_vector, image.bbox)
+        heapq.heappush(neighbors, (-d, image.id))
+        if len(neighbors) > k:
+            heapq.heappop(neighbors)
+    neighbors = [(i, d * -1) for d, i in neighbors]
+    neighbors.sort(key=lambda tup: tup[1])
+    return [names_dict[str(i)] for i, d in neighbors]
+        
+def range_search_sequential(Q, r, path):
+    idx, feature_vector, names_dict = init_search(Q, path)
+    if idx == None:
+        return []
+    images = idx.intersection(idx.bounds, objects=True) # puntero al indice
+    neighbors = []
+    range_vector = generate_range_vector(feature_vector, r)
+    for image in images: # recorrer bloque a bloque
+        if is_inside_range(image.bbox, range_vector):
+            neighbors.append(image.id)
+    return [names_dict[str(i)] for i in neighbors]
+
+#print("Los dos vecinos mas cercano de auron1.jpg: ", KNN_sequential("auron1.jpg", 4, "400"))
+print("Los dos vecinos mas cercano de auron1.jpg: ", range_search_sequential("auron1.jpg", 0.15, "100"))
