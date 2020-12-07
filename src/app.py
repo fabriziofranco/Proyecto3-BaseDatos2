@@ -46,7 +46,7 @@ def search():
    start = time.time()
    archivo =  open("data/imageInput/"+str(file.filename), "wb")
    archivo.write(file.read())
-   list_of_path = rtree_index.KNN_FaceRecognition(str(file.filename), num_results, "12800")
+   list_of_path = rtree_index.KNN_FaceRecognition(str(file.filename), num_results, "12800", True)
    end = time.time()
 
    flash(u'Se han encontrado ' + str(num_results) + ' resultados en ' + str(end - start) + ' segundos.',  'alert-success')

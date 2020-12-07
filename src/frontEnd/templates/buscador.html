@@ -23,25 +23,19 @@
             <div>
                 <input type="file" class="form-control-file mb-4 mt-2" id="file" accept="image/x-png,image/jpeg" name="file">
             </div>
-            <input class="form-control" type="number" value="16" name="numElement" id="numElement">
+            <input class="form-control" type="number" min="4" value="16" name="numElement" id="numElement">
             <div id="x" class="form-text">Seleccione el número de respuestas.</div>
             <button  class="btn btn-primary mt-3" onclick="loading();">Buscar</button>
             </div>
         </form>
     </div>
     {% if images_output %}
-    <div class="container">
-        <div class="row"> 
-            <div class="column">
-            {% for image in images_output %}
-                <img src="{{image}}" style="width:100%">
-                {% if loop.index  % ((loop.length)//4) == 0 %}
-                    </div>
-                    <div class="column">
-                {% endif %}
-            {% endfor %}
-            </div>
-        </div>
+    <div class="container mt-4">
+        <section id="pics">
+        {% for image in images_output %}
+            <div><img src="{{image}}" width="240"></div>
+        {% endfor %}
+        </section>
     </div>    
     {% endif %}
 
