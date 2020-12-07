@@ -1,4 +1,7 @@
 # Proyecto 3: Face recognition Web Platfrom
+## Video explicativo y demostrativo
+
+[Link del video](https://drive.google.com/drive/folders/1krWLKVsb1nSz-Nymhd5YSOCcPUPpH2mr?usp=sharing)
 
 ## FrontEnd
 
@@ -6,7 +9,7 @@
 ![Alt_text](https://i.ibb.co/b6GXx7y/Reconocimiento-KNN.gif)
 
 ### Búsqueda por rango
-![Alt_text](https://i.ibb.co/XjXYTq6/Reconocimiento-Rango-1.gif)
+![Alt_text](https://i.ibb.co/y4ZXB0C/Reconocimiento-Rango2.gif)
 ## Funcionamiento
 
 <img src="https://i.ibb.co/zrjygDJ/Whats-App-Image-2020-12-07-at-12-06-11-PM.jpg" data-canonical-src="https://gyazo.com/eb5c5741b6a9a16c692170a41a49c858.png" width="350" height="250" />
