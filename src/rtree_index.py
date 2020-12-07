@@ -62,7 +62,7 @@ def init_search(Q, path,frontEnd):
         idx = index.Index('face_recognition_index_' + path, properties=p)
         return idx, values, dict
     else:
-        return None
+        return None,None,None
 
 def generate_point(list):
     doble = []
@@ -104,8 +104,8 @@ def generate_range_vector(feature_vector, r):
         range_vector[i + len(feature_vector) // 2] = feature_vector[i] + r
     return range_vector
 
-def range_search_rtree(Q, r, path):
-    idx, feature_vector, names_dict = init_search(Q, path,False)
+def range_search_rtree(Q, r, path,frontEnd):
+    idx, feature_vector, names_dict = init_search(Q, path,frontEnd)
     temp_vecinos = list(idx.nearest(coordinates=feature_vector, num_results=int(path), objects=True))
     result = []
     range_vector = generate_range_vector(feature_vector, r)

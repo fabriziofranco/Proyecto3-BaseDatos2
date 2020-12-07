@@ -83,8 +83,4 @@ def range_search_sequential(Q, r, path):
     return [names_dict[str(i)] for i in neighbors]
 
 #print("Los dos vecinos mas cercano de auron1.jpg: ", KNN_sequential("auron1.jpg", 4, "400"))
-<<<<<<< HEAD
 print("Los vecinos mas cercano de auron1.jpg: ", range_search_sequential("auron1.jpg", 0.15, "100"))
-=======
-print("Los dos vecinos mas cercano de auron1.jpg: ", range_search_sequential("auron1.jpg", 0.15, "100"))
->>>>>>> 3d7a0b8a5387078f6a63aec073c77919f395f008

@@ -62,7 +62,7 @@ def search():
 
 @app.route('/data/12800/<path:filename>')
 def base_static(filename):
-    return send_from_directory('data/12800/', filename)
+   return send_from_directory('data/12800/', filename)
    
 if __name__ == '__main__':
    app.run()
