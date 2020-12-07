@@ -2,12 +2,11 @@
 
 {% block content %}
 
-
-
+<link rel="stylesheet" href="{{ url_for('static', filename='grid.css')}}">
 
 {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}
-    <div class=flashes>
+    <div class=flashes id="flash">
     {% for category, message in messages %}
       <div class="alert {{ category }}" role="alert">{{ message }}</div>
     {% endfor %}
@@ -17,50 +16,33 @@
 
 <main class="flex-shrink-0">
     <div id="loading" class="loader">Loading...</div>
-    <div class="container" id="uploader">
+    <div class="container">
         <h1 class="mt-5">Reconocimiento Facial</h1>
         <p class="lead">Subir a continuación una imágen a la que desea encontrar simulitudes en nuestra base de datos:</p>
         <form action="{{ url_for('search') }}" method="post" enctype="multipart/form-data">
             <div>
                 <input type="file" class="form-control-file mb-4 mt-2" id="file" accept="image/x-png,image/jpeg" name="file">
             </div>
-            <select class="form-control" id="numElement" name="numElement">
-                <option>10</option>
-                <option>1</option>
-                <option>25</option>
-                <option>50</option>
-            </select>
+            <input class="form-control" type="number" value="16" name="numElement" id="numElement">
             <div id="x" class="form-text">Seleccione el número de respuestas.</div>
             <button  class="btn btn-primary mt-3" onclick="loading();">Buscar</button>
             </div>
         </form>
     </div>
     {% if images_output %}
-    <div class="container mt-4">
-        <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-        <div class="carousel-inner">
+    <div class="container">
+        <div class="row"> 
+            <div class="column">
             {% for image in images_output %}
-                {% if loop.first %}
-                    <div class="carousel-item active">
-                {% else %}
-                    <div class="carousel-item">
-                {% endif %}
-                    <img class="d-block" src="{{image.url}}" alt="Third slide">
-                      <div class="carousel-caption d-none d-md-block text-dark">
-                        <p>Precisión de la coincidencia: {{image.accuracy}}</p>
+                <img src="{{image}}" style="width:100%">
+                {% if loop.index  % ((loop.length)//4) == 0 %}
                     </div>
-                </div>  
+                    <div class="column">
+                {% endif %}
             {% endfor %}
+            </div>
         </div>
-        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-        </a>
-    </div>
+    </div>    
     {% endif %}
 
     </div>

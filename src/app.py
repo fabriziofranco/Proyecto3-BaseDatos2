@@ -6,6 +6,7 @@ import os
 import glob
 import time
 import rtree_index
+from werkzeug.utils import secure_filename
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -23,27 +24,37 @@ def home():
 
 @app.route('/search', methods = ['POST'])
 def search():
-   uploaded_files = request.files.getlist("file")
-   numero_bloques = request.form.get("numElement")
+   num_results = int(request.form.get("numElement"))
+
+   if 'file' not in request.files:
+      flash('No hay archivo, intente nuevamente.', 'alert-danger')
+      return redirect(url_for('home'))
    
+   file = request.files['file']
+
+   if file.filename == '':
+      flash('Archivo no seleccionado', 'alert-danger')
+      return redirect(url_for('home'))
+   
+   if file:
+      filename = secure_filename(file.filename)
+
    files = glob.glob('data/imageInput/*')
    for f in files:
       os.remove(f)
+   
+   start = time.time()
+   archivo =  open("data/imageInput/"+str(file.filename), "wb")
+   archivo.write(file.read())
+   list_of_path = rtree_index.KNN_FaceRecognition(str(file.filename), num_results, "12800")
+   end = time.time()
 
-   for file in uploaded_files:
-      with open("data/imageInput/"+str(file.filename), "wb") as archivo:
-         archivo.write(file.read())
-         list_of_path = rtree_index.KNN_FaceRecognition(str(file.filename), 8, "12800")
-      
-   flash(u'Los datos se han cargado de manera correcta.',  'alert-success')
+   flash(u'Se han encontrado ' + str(num_results) + ' resultados en ' + str(end - start) + ' segundos.',  'alert-success')
 
    images_output = list()
    for f in list_of_path:
-      tempImage = dict()
-      tempImage["url"] = 'data/12800/' + f
-      images_output.append(tempImage)
+      images_output.append('data/12800/' + f)
       
-
    print(images_output)
    return render_template('buscador.html', images_output=images_output)
 
