@@ -31,7 +31,7 @@ Las consultas se ejecutaron 5 veces y se promedio el tiempo de respuesta para da
 | 200      | 0.849 s|  0.865 s     |
 | 400   |0.964 s |   0.849 s    |
 | 800   | 1.062 s | 0.964 s      |
-| 1600   |1. 154 s |  1.039 s    |
+| 1600   |1.154 s |  1.039 s    |
 | 3200   |1.360 s |  2.015 s    |
 | 6400   | 1.444 s|  2.032 s     |
 | 12800   |1.945 s|  2.735 s     |
