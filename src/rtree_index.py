@@ -121,7 +121,7 @@ def range_search_rtree(Q, r, path,frontEnd):
 
 ### Experimientos 
 
-start = time.time()
-print("\nRange search - Vecinos de auron: ", range_search_rtree("auron1.jpg", 0.15, "12800", False))
-print(time.time() - start)
+# start = time.time()
+# print("\nRange search - Vecinos de auron: ", range_search_rtree("auron1.jpg", 0.15, "12800", False))
+# print(time.time() - start)
 #print(knn)

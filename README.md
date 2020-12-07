@@ -1,22 +1,15 @@
 # Proyecto 3: Face recognition Web Platfrom
 
-
-
-
 ## FrontEnd
 
 ### Búsqueda de vecinos cercanos
 ![Alt_text](https://i.ibb.co/b6GXx7y/Reconocimiento-KNN.gif)
 
 ### Búsqueda por rango
-![Alt_text](https://i.ibb.co/ZMyGmRD/Reconocimiento-Rango.gif)
-
+![Alt_text](https://i.ibb.co/XjXYTq6/Reconocimiento-Rango-1.gif)
 ## Funcionamiento
 
-
-
 <img src="https://i.ibb.co/zrjygDJ/Whats-App-Image-2020-12-07-at-12-06-11-PM.jpg" data-canonical-src="https://gyazo.com/eb5c5741b6a9a16c692170a41a49c858.png" width="350" height="250" />
-
 
 ###### Fuente: Multimedia Database 2 - BASE DE DATOS 2- UTEC
 
@@ -26,7 +19,7 @@ La figura de arriba ilustra el funcionamiento de la base de Datos, las imágenes
 <img src="https://i.ibb.co/pJDv5p1/Whats-App-Image-2020-12-07-at-12-09-14-PM.jpg" data-canonical-src="https://gyazo.com/eb5c5741b6a9a16c692170a41a49c858.png" width="300" height="300" />
 
 
-###### Fuente: Multimedia Database 2 - BASE DE DATOS 2- UTEC
+###### Fuente: Multimedia Database 2 - BASE DE DATOS 2 - UTEC
 
 La creación del R-tree se da el constructor de la clase ```Rtree_index```, allí se inicializan todas las propiedades, la más importante es el capacity dada por la fórmula ```int(math.log(total_files, 10) ** 2) + 3```, esto dinamiza el índice y lo mantiene óptimo en inserciones y búsquedas. Este genera un archivo .index con el R-tree, un archivo .data con los ids de los elementos y sus vectores característicos y demás información de utilidad. Adicionalmente, genera un diccionario en json que guarda ID's con nombres de archivos. La estructura se crea vacía, pero para este proyecto se le insertan automáticamente los 100,200...,12800 elementos a cada índice R-tree correspondiente para la experimentación y pruebas.
 
@@ -89,7 +82,7 @@ Pasos:
 
 1) Utilizar la función `generate_range_vector` para generar el vector que va a contener los rangos en los que se puede encontrar un vecino.
 2) Usar la función `intersect` con el range vector generado, para que retorne las imágenes dentro de ese rango.
-3) Ir cargando vecino a vecino (bloque a bloque), e ir agregándolo al resultado.
+3) Por detrás, la libreria va cargando vecino a vecino (bloque a bloque), e ir agregándolo al resultado en caso corresponda, una vez se encuentre el primero que no intersecta se detiene la ejecución.
 5) Retornar los resultados.
 
 #### Secuencial
@@ -101,6 +94,6 @@ Pasos:
 3) Verificamos si el vecino se encuentra dentro del rango, y lo ingresamos al vector de respuesta.
 4) Una vez hayamos iterado a través de todos los vecinos, retornamos la respuesta.
 
+## Calidad de resultados 
 
-
-![Alt_text](https://i.ibb.co/Q6zGpBh/Whats-App-Image-2020-12-07-at-12-07-17-PM.jpg)
+Según la documentación de las librerias la precisión ronda el 99%, para el desarrollo de este proyecto, con diferentes valores K para todas las colecciones de N=100 hasta N=12800 se obtuvo un precisión promedio de *95.45%* para la búsqueda KNN y *96.83%* para la búsqueda en rango. Dicho análisis se hizo con la aplicación web y personajes conocidos de la colección que permitieron hacer análisis estadístico pertinente.
