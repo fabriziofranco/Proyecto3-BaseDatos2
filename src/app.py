@@ -33,7 +33,7 @@ def search():
    for file in uploaded_files:
       with open("data/imageInput/"+str(file.filename), "wb") as archivo:
          archivo.write(file.read())
-         list_of_path = rtree_index.KNN_FaceRecognition(str(file.filename), 8, "12800")
+         list_of_path = rtree_index.KNN_FaceRecognition(str(file.filename), 8, "12800",True)
       
    flash(u'Los datos se han cargado de manera correcta.',  'alert-success')
 

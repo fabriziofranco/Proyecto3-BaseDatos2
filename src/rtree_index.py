@@ -38,25 +38,11 @@ class Rtree_index:
         json.dump(diccionario, file)
         file.close()
 
-
-def generate_point(list):
-    doble = []
-    for i in list:
-        doble.append(i)
-    for i in list:
-        doble.append(i)
-    return tuple(i and i for i in doble)
-
-def euclidean_distance(p1, p2):
-    squared_dist = 0
-    for i in range(len(p1)):
-        squared_dist += math.pow(p1[i] - p2[i], 2)
-    return math.sqrt(squared_dist)
-
-def KNN_FaceRecognition(Q, k, path):
-    #total_path = 'data/' + path + '/'
-
-    total_path = 'data/imageInput/'
+def init_search(Q, path,frontEnd):
+    if frontEnd==False:
+        total_path = 'data/' + path + '/'
+    else:
+        total_path = 'data/imageInput/'
     total_files = int(path)
 
     with open("diccionario_" + path + ".json") as json_file:
@@ -74,16 +60,75 @@ def KNN_FaceRecognition(Q, k, path):
         p.idx_extension = 'index'
         p.overwrite = False
         idx = index.Index('face_recognition_index_' + path, properties=p)
-        temp = list(idx.nearest(coordinates=values, num_results=k))
-        vecinos = []
-        for i in temp:
-            vecinos.append(dict[str(i)])
+        return idx, values, dict
     else:
-        vecinos = []
+        return None
+
+def generate_point(list):
+    doble = []
+    for i in list:
+        doble.append(i)
+    for i in list:
+        doble.append(i)
+    return tuple(i and i for i in doble)
+
+def euclidean_distance(p1, p2):
+    squared_dist = 0
+    for i in range(len(p1)):
+        squared_dist += math.pow(p1[i] - p2[i], 2)
+    return math.sqrt(squared_dist)
+
+def KNN_FaceRecognition(Q, k, path,frontEnd):
+    idx, feature_vector, names_dict = init_search(Q, path,frontEnd)
+    if idx == None:
+        return []
+    temp_vecinos = list(idx.nearest(coordinates=feature_vector, num_results=k))
+    vecinos = []
+    for i in temp_vecinos:
+        vecinos.append(names_dict[str(i)])
     return vecinos
 
 
+#######################################
 
+def is_inside_range(neighbor_feature_vector, range_vector):
+    for i in range(len(neighbor_feature_vector) // 2):
+        if not range_vector[i] <= neighbor_feature_vector[i] <= range_vector[i + len(neighbor_feature_vector) // 2]:
+            return False
+    return True
+
+def generate_range_vector(feature_vector, r):
+    range_vector = [0] * len(feature_vector)
+    for i in range(len(feature_vector) // 2):
+        range_vector[i] = feature_vector[i] - r
+        range_vector[i + len(feature_vector) // 2] = feature_vector[i] + r
+    return range_vector
+
+def range_search_rtree(Q, r, path):
+    idx, feature_vector, names_dict = init_search(Q, path,False)
+    vecinos = KNN_FaceRecognition(Q,int(path),path,False)
+    result = []
+    for i in vecinos:
+        picture_1 = face_recognition.load_image_file('data/' + path + '/' + i)
+        face_encoding_1 = face_recognition.face_encodings(picture_1)
+        if face_encoding_1:
+            values = face_encoding_1[0].tolist()
+            if 
+            diccionario.setdefault(len(diccionario), filename)
+            idx.insert(len(diccionario) - 1, values)
+
+    idx, feature_vector, names_dict = init_search(Q, path,False)
+    if idx == None:
+        return []
+    images = idx.intersection(idx.bounds, objects=True) # puntero al indice
+    neighbors = []
+    range_vector = generate_range_vector(feature_vector, r)
+    for image in images: # recorrer bloque a bloque
+        if is_inside_range(image.bbox, range_vector):
+            neighbors.append(image.id)
+    return [names_dict[str(i)] for i in neighbors]
+
+#######################################
 
 # rtree_index  = Rtree_index("100")
 # rtree_index2 = Rtree_index("200")
@@ -99,6 +144,9 @@ def KNN_FaceRecognition(Q, k, path):
 ### Experimientos 
 
 
-#knn = KNN_FaceRecognition("auron5.jpg", 8, "12800")
-#print(knn)
+knn = KNN_FaceRecognition("auron1.jpg", 8, "12800",False)
+print(knn)
+
+
+
 
