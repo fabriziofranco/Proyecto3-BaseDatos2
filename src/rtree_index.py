@@ -78,7 +78,7 @@ def euclidean_distance(p1, p2):
         squared_dist += math.pow(p1[i] - p2[i], 2)
     return math.sqrt(squared_dist)
 
-def KNN_FaceRecognition(Q, k, path,frontEnd):
+def KNN_FaceRecognition(Q, k, path,frontEnd=True):
     idx, feature_vector, names_dict = init_search(Q, path,frontEnd)
     if idx == None:
         return []
@@ -106,27 +106,15 @@ def generate_range_vector(feature_vector, r):
 
 def range_search_rtree(Q, r, path):
     idx, feature_vector, names_dict = init_search(Q, path,False)
-    vecinos = KNN_FaceRecognition(Q,int(path),path,False)
+    temp_vecinos = list(idx.nearest(coordinates=feature_vector, num_results=int(path), objects=True))
     result = []
-    for i in vecinos:
-        picture_1 = face_recognition.load_image_file('data/' + path + '/' + i)
-        face_encoding_1 = face_recognition.face_encodings(picture_1)
-        if face_encoding_1:
-            values = face_encoding_1[0].tolist()
-            if 
-            diccionario.setdefault(len(diccionario), filename)
-            idx.insert(len(diccionario) - 1, values)
-
-    idx, feature_vector, names_dict = init_search(Q, path,False)
-    if idx == None:
-        return []
-    images = idx.intersection(idx.bounds, objects=True) # puntero al indice
-    neighbors = []
     range_vector = generate_range_vector(feature_vector, r)
-    for image in images: # recorrer bloque a bloque
-        if is_inside_range(image.bbox, range_vector):
-            neighbors.append(image.id)
-    return [names_dict[str(i)] for i in neighbors]
+    for vecino in temp_vecinos:
+        if is_inside_range(vecino.bbox, range_vector):
+            result.append(names_dict[str(vecino.id)])
+        else:
+            break
+    return result
 
 #######################################
 
@@ -139,14 +127,9 @@ def range_search_rtree(Q, r, path):
 # rtree_index7 = Rtree_index("6400")
 # rtree_index8 = Rtree_index("12800")
 
-
-
 ### Experimientos 
 
 
-knn = KNN_FaceRecognition("auron1.jpg", 8, "12800",False)
-print(knn)
-
-
-
-
+#knn = KNN_FaceRecognition("auron1.jpg", 8, "12800",False)
+print("Los vecinos mas cercano de auron1.jpg: ", range_search_rtree("auron1.jpg", 0.15, "100"))
+#print(knn)
