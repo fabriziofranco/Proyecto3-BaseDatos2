@@ -5,9 +5,10 @@ import sys
 import os 
 import glob
 import time
+import rtree_index
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-sys.path.append("../merging_blocks/0.json")
+
 
 app = Flask(__name__,
             static_url_path='', 
@@ -32,27 +33,25 @@ def search():
    for file in uploaded_files:
       with open("data/imageInput/"+str(file.filename), "wb") as archivo:
          archivo.write(file.read())
-   
-   #index.Index("clean", "inverted_index", "merging_blocks", "sorted_blocks", int(numero_bloques))
-   
+         list_of_path = rtree_index.KNN_FaceRecognition(str(file.filename), 8, "12800")
+      
    flash(u'Los datos se han cargado de manera correcta.',  'alert-success')
 
    images_output = list()
-   for f in glob.glob('data/imageOutput/*'):
+   for f in list_of_path:
       tempImage = dict()
-      tempImage["url"] = f
-      tempImage["accuracy"] = 0.8
+      tempImage["url"] = 'data/12800/' + f
       images_output.append(tempImage)
-
+      
 
    print(images_output)
    return render_template('buscador.html', images_output=images_output)
 
 
 
-@app.route('/data/imageOutput/<path:filename>')
+@app.route('/data/12800/<path:filename>')
 def base_static(filename):
-    return send_from_directory('data/imageOutput/', filename)
+    return send_from_directory('data/12800/', filename)
    
 if __name__ == '__main__':
    app.run()

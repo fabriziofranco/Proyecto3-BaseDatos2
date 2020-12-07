@@ -54,7 +54,9 @@ def euclidean_distance(p1, p2):
     return math.sqrt(squared_dist)
 
 def KNN_FaceRecognition(Q, k, path):
-    total_path = 'data/' + path + '/'
+    #total_path = 'data/' + path + '/'
+
+    total_path = 'data/imageInput/'
     total_files = int(path)
 
     with open("diccionario_" + path + ".json") as json_file:
@@ -97,6 +99,6 @@ def KNN_FaceRecognition(Q, k, path):
 ### Experimientos 
 
 
-knn = KNN_FaceRecognition("auron1.jpg", 8, "400")
-print(knn)
+#knn = KNN_FaceRecognition("auron5.jpg", 8, "12800")
+#print(knn)
 
