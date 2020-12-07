@@ -25,4 +25,4 @@ To do
 | 6400   | 0.977 s        |       |
 | 12800   | 1.068 s        |       |
 
-Las consultas se ejecutaron 5 veces y se promedio el tiempo de respuesta para dar resultados más reales con un K=8. El capacity de los nodos se calcula de forma dinámica por la fórmula ```roun(log(total_files, 10) ** 2) + 3 ``` , lo cual permite que el índice siga siendo rápido, independientemente de la cantidad de elementos que se estima alojará, esto se evhaceidencia en buenos tiempos de respuesta para todos y cada uno de los índices construidos.
+Las consultas se ejecutaron 5 veces y se promedio el tiempo de respuesta para dar resultados más reales con un K=8. El capacity de los nodos se calcula de forma dinámica por la fórmula ```round(log(total_files, 10) ** 2) + 3 ``` , lo cual permite que el índice siga siendo rápido, independientemente de la cantidad de elementos que se estima alojará, esto se evhaceidencia en buenos tiempos de respuesta para todos y cada uno de los índices construidos.
