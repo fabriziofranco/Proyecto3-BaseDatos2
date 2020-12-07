@@ -1,16 +1,35 @@
-# Proyecto3-BaseDatos2
-Face recognition Web Platfrom
+# Proyecto 3: Face recognition Web Platfrom
+
 
 
 
 ## FrontEnd
 
-// Aqui va el front 
+### Búsqueda de vecinos cercanos
+![Alt_text](https://i.ibb.co/b6GXx7y/Reconocimiento-KNN.gif)
 
+### Búsqueda por rango
+![Alt_text](https://i.ibb.co/ZMyGmRD/Reconocimiento-Rango.gif)
 
 ## Funcionamiento
 
+
+
+<img src="https://i.ibb.co/zrjygDJ/Whats-App-Image-2020-12-07-at-12-06-11-PM.jpg" data-canonical-src="https://gyazo.com/eb5c5741b6a9a16c692170a41a49c858.png" width="350" height="250" />
+
+
+###### Fuente: Multimedia Database 2 - BASE DE DATOS 2- UTEC
+
+La figura de arriba ilustra el funcionamiento de la base de Datos, las imágenes son representadas a partir de su vector característico y los índices son R-tree o secuencial. Apartir de las consultas sobre índice se accede a la base de datos y se retorna las imágenes correspondientes a la consulta.
 ### Construcción del índice
+
+<img src="https://i.ibb.co/pJDv5p1/Whats-App-Image-2020-12-07-at-12-09-14-PM.jpg" data-canonical-src="https://gyazo.com/eb5c5741b6a9a16c692170a41a49c858.png" width="300" height="300" />
+
+
+###### Fuente: Multimedia Database 2 - BASE DE DATOS 2- UTEC
+
+La creación del R-tree se da el constructor de la clase ```Rtree_index```, allí se inicializan todas las propiedades, la más importante es el capacity dada por la fórmula ```int(math.log(total_files, 10) ** 2) + 3```, esto dinamiza el índice y lo mantiene óptimo en inserciones y búsquedas. Este genera un archivo .index con el R-tree, un archivo .data con los ids de los elementos y sus vectores característicos y demás información de utilidad. Adicionalmente, genera un diccionario en json que guarda ID's con nombres de archivos. La estructura se crea vacía, pero para este proyecto se le insertan automáticamente los 100,200...,12800 elementos a cada índice R-tree correspondiente para la experimentación y pruebas.
+
 
 
 ## Experimentación
@@ -31,33 +50,24 @@ Face recognition Web Platfrom
 
 
 Las consultas se ejecutaron 5 veces y se promedio el tiempo de respuesta para dar resultados más reales con un K=8. El capacity de los nodos se calcula de forma dinámica por la fórmula ```round(log(total_files, 10) ** 2) + 3 ``` , lo cual permite que el índice siga siendo rápido, independientemente de la cantidad de elementos que se estima alojará, esto se evidencia en buenos tiempos de respuesta para todos y cada uno de los índices construidos.
-
-
 #### R-tree
 
 Pasos:
 
-1) Utilizar la función `generate_range_vector` para generar el vector que va a contener los rangos en los que se puede encontrar un vecino.
-2) Utilizar la función `nearest` de la librería, para obtener los vecinos más cercanos en orden.
-3) Ir cargando vecino a vecino (bloque a bloque). (MIN-DIST)
-4) Verificar si el vecino se encuentra dentro del vector de rangos usando la función `is_inside_range`.
-    1) Si se encuentra dentro, se añade a los resultados.
-    2) En caso contrario, dejamos de iterar los vecinos, dado que como han sido retornados en orden, si este vecino no se encuentra dentro de rango, quiere decir que los vecinos restantes tampoco lo están.
-5) Retornar los resultados.
+1) Usamos la función `nearest` de la librería, y esta nos retorna directamente los K vecinos más cercanos. Dicha función trabaja de la siguiente manera:  
+    a) Cargar Bloque=p
 
 #### Secuencial
     
 Pasos:
 
-1) Aprovechando los archivos `.data` generados por la librería del R-tree, usamos la función `intersect` para traer todos los resultados, pidiendo la intersección de los bounds máximos presentes en todo el árbol. Cabe recalcar que al hacer esto no estamos usando el índice R-tree, ya que vamos a iterar secuencialmente a través de todos las imágenes presentes en este índicea
-2) Luego, vamos cargando vecino a vecino (bloque a bloque).
-3) Verificamos si el vecino se encuentra dentro del rango, y lo ingresamos al vector de respuesta.
-4) Una vez hayamos iterado a través de todos los vecinos, retornamos la respuesta.
-
-
-
-#### R-tree
-#### Secuencial
+1) Aprovechando los archivos `.data` generados por la librería del R-tree, usamos la función `intersect` para traer todos los resultados, pidiendo la intersección de los bounds máximos presentes en todo el árbol. Cabe recalcar que al hacer esto no estamos usando el índice R-tree, ya que vamos a iterar secuencialmente a través de todos las imágenes presentes en este índices.
+2) Usamos un min heap para guardar los K vecinos más cercanos.
+3) Luego, vamos cargando vecino a vecino (bloque a bloque).
+    1) Calculamos la distancia euclideana entre el vecino actual y el query.
+    2) Añadimos una tupla de la forma `(distancia * -1, id)` al min heap, para que este se comporte como un max heap.
+    3) Si el tamaño del heap es mayor que K, hacemos pop al heap (borra el elemento máximo).
+4) Una vez hayamos iterado secuencialmente a través de todos los vecinos, retornamos la respuesta.
 
 ### RANGE SEARCH
 
@@ -88,7 +98,11 @@ Pasos:
     
 Pasos:
 
-1) Aprovechando los archivos `.data` generados por la librería del R-tree, usamos la función `intersect` para traer todos los resultados, pidiendo la intersección de los bounds máximos presentes en todo el árbol. Cabe recalcar que al hacer esto no estamos usando el índice R-tree, ya que vamos a iterar secuencialmente a través de todos las imágenes presentes en este índicea
+1) Aprovechando los archivos `.data` generados por la librería del R-tree, usamos la función `intersect` para traer todos los resultados, pidiendo la intersección de los bounds máximos presentes en todo el árbol. Cabe recalcar que al hacer esto no estamos usando el índice R-tree, ya que vamos a iterar secuencialmente a través de todos las imágenes presentes en este índices.
 2) Luego, vamos cargando vecino a vecino (bloque a bloque).
 3) Verificamos si el vecino se encuentra dentro del rango, y lo ingresamos al vector de respuesta.
 4) Una vez hayamos iterado a través de todos los vecinos, retornamos la respuesta.
+
+
+
+![Alt_text](https://i.ibb.co/Q6zGpBh/Whats-App-Image-2020-12-07-at-12-07-17-PM.jpg)
